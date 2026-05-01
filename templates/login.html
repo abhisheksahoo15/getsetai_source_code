@@ -47,19 +47,29 @@
         errorDiv.style.display = 'none';
 
         try {
-            const { data, error } = await window.supabaseClient.auth.signInWithPassword({
-                email,
-                password
+            // Call backend API instead of Supabase directly
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password })
             });
 
-            if (error) throw error;
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.error || 'Login failed');
+            }
             
-            // Success
+            // Success - redirect to home
+            alert('✅ Login successful!');
             window.location.href = '/';
             
         } catch (error) {
-            errorDiv.textContent = error.message;
+            errorDiv.textContent = error.message || 'An error occurred. Check browser console.';
             errorDiv.style.display = 'block';
+            console.error('Login error:', error);
             btn.disabled = false;
             btn.textContent = 'Sign In';
         }

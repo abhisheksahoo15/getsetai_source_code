@@ -52,15 +52,23 @@
         successDiv.style.display = 'none';
 
         try {
-            const { data, error } = await window.supabaseClient.auth.signUp({
-                email,
-                password
+            // Call backend API instead of Supabase directly
+            const response = await fetch('/api/auth/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password })
             });
 
-            if (error) throw error;
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.error || 'Signup failed');
+            }
             
             // Success
-            successDiv.textContent = 'Account created successfully! You can now sign in.';
+            successDiv.textContent = '✅ Account created successfully! Redirecting to login...';
             successDiv.style.display = 'block';
             btn.textContent = 'Sign Up Complete';
             
@@ -69,8 +77,9 @@
             }, 2000);
             
         } catch (error) {
-            errorDiv.textContent = error.message;
+            errorDiv.textContent = error.message || 'An error occurred. Check browser console.';
             errorDiv.style.display = 'block';
+            console.error('Signup error:', error);
             btn.disabled = false;
             btn.textContent = 'Sign Up';
         }

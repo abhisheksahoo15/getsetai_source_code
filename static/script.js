@@ -18,10 +18,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const elementsToAnimate = document.querySelectorAll('.animate-on-scroll');
     elementsToAnimate.forEach(el => observer.observe(el));
 
-    // Supabase Initialization
-    // Wait for the Supabase library to load from CDN
-    if (typeof supabase !== 'undefined' && window.SUPABASE_URL && window.SUPABASE_KEY) {
-        window.supabaseClient = supabase.createClient(window.SUPABASE_URL, window.SUPABASE_KEY);
-        console.log("Supabase Client Initialized");
-    }
+    // Check backend Supabase connectivity
+    fetch('/api/health')
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'ok') {
+                console.log("✅ Backend Supabase client initialized successfully");
+            }
+        })
+        .catch(error => {
+            console.error("❌ Backend connectivity issue:", error);
+        });
 });
