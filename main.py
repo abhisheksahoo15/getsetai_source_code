@@ -31,15 +31,27 @@ templates = Jinja2Templates(directory="templates")
 SUPABASE_URL = os.getenv("NEXT_PUBLIC_SUPABASE_URL")
 SUPABASE_KEY = os.getenv("NEXT_PUBLIC_SUPABASE_ANON_KEY")
 
-if not SUPABASE_URL or not SUPABASE_KEY:
-    raise Exception("❌ Missing Supabase credentials in .env file!")
+supabase: Client = None
 
-supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+if SUPABASE_URL and SUPABASE_KEY:
+    try:
+        supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+        print("✅ Supabase client initialized")
+    except Exception as e:
+        print(f"⚠️  Failed to initialize Supabase: {e}")
+else:
+    print("⚠️  Supabase credentials not found in environment variables")
 
 @app.post("/api/auth/login")
 async def api_login(request: Request):
     """Backend authentication endpoint"""
     try:
+        if not supabase:
+            return JSONResponse(
+                {"error": "Supabase not initialized. Check environment variables."},
+                status_code=503
+            )
+        
         data = await request.json()
         email = data.get("email")
         password = data.get("password")
@@ -73,6 +85,12 @@ async def api_login(request: Request):
 async def api_signup(request: Request):
     """Backend signup endpoint"""
     try:
+        if not supabase:
+            return JSONResponse(
+                {"error": "Supabase not initialized. Check environment variables."},
+                status_code=503
+            )
+        
         data = await request.json()
         email = data.get("email")
         password = data.get("password")
@@ -104,22 +122,18 @@ async def api_signup(request: Request):
 
 @app.get("/api/health")
 async def health_check():
-    """Check Supabase connectivity"""
-    try:
-        # Simple test to verify Supabase is reachable
-        return JSONResponse({
-            "status": "ok",
-            "supabase_url": SUPABASE_URL,
-            "message": "✅ Supabase client initialized successfully"
-        })
-    except Exception as error:
-        return JSONResponse(
-            {
-                "status": "error",
-                "error": str(error)
-            },
-            status_code=500
-        )
+    """Check API and Supabase connectivity"""
+    return JSONResponse({
+        "status": "ok",
+        "message": "✅ FastAPI is running",
+        "supabase_initialized": supabase is not None
+    })
+
+
+@app.get("/api/test")
+async def test_api():
+    """Test endpoint to verify API is working"""
+    return {"message": "API working"}
 
 
 @app.get("/", response_class=HTMLResponse)
