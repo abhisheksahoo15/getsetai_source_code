@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 4rem 1.5rem; position: relative;">
+    <div style="position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, rgba(0, 240, 255, 0.1), transparent 50%); z-index: -1;"></div>
+    
+    <div class="animate-on-scroll" style="text-align: center; max-width: 48rem; margin: 0 auto;">
+        <h1 style="font-size: 3rem; font-weight: 900; margin-bottom: 1.5rem; line-height: 1.2;">
+            Architecting the <span class="text-gradient">Future</span> of Digital Intelligence
+        </h1>
+        <p style="font-size: 1.125rem; color: #9ca3af; margin-bottom: 2rem;">
+            Empowering enterprises with cutting-edge AI solutions, robust infrastructure, and transformative digital experiences.
+        </p>
+        
+        <div style="display: flex; gap: 1rem; justify-content: center;">
+            <a href="/#courses" style="padding: 0.75rem 2rem; background: white; color: black; text-decoration: none; border-radius: 0.5rem; font-weight: 600; box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);">
+                Explore Programs
+            </a>
+            <a href="/#services" class="glass-panel" style="padding: 0.75rem 2rem; color: white; text-decoration: none; font-weight: 600;">
+                Our Services
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section id="services" style="padding: 5rem 1.5rem;">
+    <div style="max-width: 80rem; margin: 0 auto;">
+        <div class="animate-on-scroll" style="text-align: center; margin-bottom: 4rem;">
+            <h2 style="font-size: 2.25rem; font-weight: 700;">Enterprise <span class="text-gradient">Services</span></h2>
+            <p style="color: #9ca3af; margin-top: 1rem;">Comprehensive tech solutions for modern businesses.</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+            <!-- Service 1 -->
+            <div class="glass-panel animated-border animate-on-scroll" style="padding: 2rem;">
+                <h3 style="font-size: 1.25rem; font-weight: 700; color: white; margin-bottom: 1rem;">Full Stack App Development</h3>
+                <p style="color: #9ca3af; font-size: 0.875rem;">End-to-end web and mobile applications built with modern architectures.</p>
+            </div>
+            <!-- Service 2 -->
+            <div class="glass-panel animated-border animate-on-scroll" style="padding: 2rem; transition-delay: 100ms;">
+                <h3 style="font-size: 1.25rem; font-weight: 700; color: white; margin-bottom: 1rem;">Cloud & Database Systems</h3>
+                <p style="color: #9ca3af; font-size: 0.875rem;">Scalable cloud infrastructure and optimized database engineering.</p>
+            </div>
+            <!-- Service 3 -->
+            <div class="glass-panel animated-border animate-on-scroll" style="padding: 2rem; transition-delay: 200ms;">
+                <h3 style="font-size: 1.25rem; font-weight: 700; color: white; margin-bottom: 1rem;">AI Custom Integration</h3>
+                <p style="color: #9ca3af; font-size: 0.875rem;">Embed intelligent ML models directly into your business workflows.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Courses Section -->
+<section id="courses" style="padding: 5rem 1.5rem; background: rgba(0, 0, 0, 0.3);">
+    <div style="max-width: 80rem; margin: 0 auto;">
+        <div class="animate-on-scroll" style="text-align: center; margin-bottom: 4rem;">
+            <h2 style="font-size: 2.25rem; font-weight: 700;">Professional <span class="text-gradient">Programs</span></h2>
+            <p style="color: #9ca3af; margin-top: 1rem;">Master the skills driving the future of tech.</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem;">
+            <!-- Course 1 -->
+            <div class="glass-panel animate-on-scroll" style="padding: 2rem; display: flex; flex-direction: column;">
+                <h3 style="font-size: 1.5rem; font-weight: 700; color: white; margin-bottom: 0.5rem;">Advanced AI Engineering</h3>
+                <div style="font-size: 2rem; font-weight: 900; color: var(--color-neon-cyan); margin-bottom: 1rem;">₹14,999</div>
+                <p style="color: #9ca3af; font-size: 0.875rem; margin-bottom: 2rem; flex-grow: 1;">Build and deploy production-ready LLMs and intelligent agents.</p>
+                <button class="btn-submit razorpay-btn" data-amount="14999">Enroll Now</button>
+            </div>
+            <!-- Course 2 -->
+            <div class="glass-panel animate-on-scroll" style="padding: 2rem; display: flex; flex-direction: column; transition-delay: 100ms; background: linear-gradient(145deg, rgba(255,0,255,0.05), rgba(0,0,0,0));">
+                <h3 style="font-size: 1.5rem; font-weight: 700; color: white; margin-bottom: 0.5rem;">Full Stack Mastery</h3>
+                <div style="font-size: 2rem; font-weight: 900; color: var(--color-neon-magenta); margin-bottom: 1rem;">₹9,999</div>
+                <p style="color: #9ca3af; font-size: 0.875rem; margin-bottom: 2rem; flex-grow: 1;">From zero to deploying scalable React & Node.js architectures.</p>
+                <button class="btn-submit razorpay-btn" data-amount="9999">Enroll Now</button>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<!-- Razorpay Checkout -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    // Razorpay Integration Stub
+    document.querySelectorAll('.razorpay-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const amount = e.target.getAttribute('data-amount');
+            alert(`Razorpay integration to be connected for ₹${amount}. \nKey ID: {{ request.state.razorpay_key }}`);
+        });
+    });
+</script>
+{% endblock %}

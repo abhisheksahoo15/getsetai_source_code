@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Getsetai Innovations | Digital Transformation</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Inject env variables from FastAPI
+        window.SUPABASE_URL = "{{ supabase_url }}";
+        window.SUPABASE_KEY = "{{ supabase_key }}";
+    </script>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <div class="nav-logo-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                </div>
+                <span>Getsetai <span class="text-gradient">Innovations</span></span>
+            </a>
+            
+            <div class="nav-links" style="display: none;">
+                <!-- Hide on mobile -->
+            </div>
+            <div class="nav-links" style="display: flex;">
+                <a href="/#features">Features</a>
+                <a href="/#services">Services</a>
+                <a href="/#careers">Careers</a>
+                <a href="/#courses">Courses</a>
+            </div>
+
+            <div class="nav-actions">
+                <a href="/login" class="btn-signin">Sign In</a>
+                <a href="/signup" class="btn-get-started">Get Started <span style="color: #f97316;">⚡</span></a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer style="margin-top: 5rem; padding: 4rem 1.5rem; background: black; border-top: 1px solid var(--color-glass-border); text-align: center;">
+        <div style="max-width: 80rem; margin: 0 auto; color: #9ca3af; font-size: 0.875rem;">
+            <p>© 2026 Designed By Getsetai Innovations. Copyright materials under MSME.</p>
+            <p style="color: #f87171; margin-top: 0.5rem;"><strong style="color: #ef4444;">WARNING:</strong> Bug Bounty, penetration testing, or any unauthorized testing on the website server is strictly prohibited and will lead to immediate legal action.</p>
+        </div>
+    </footer>
+
+    <script src="/static/script.js"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

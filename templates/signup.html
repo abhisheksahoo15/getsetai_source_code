@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="min-height: calc(100vh - 5rem); display: flex; align-items: center; justify-content: center; padding: 2rem 1.5rem;">
+    <div class="glass-panel animate-on-scroll" style="width: 100%; max-width: 28rem; padding: 3rem 2rem;">
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <h1 style="font-size: 1.5rem; font-weight: 700; color: white;">Create an Account</h1>
+            <p style="color: #9ca3af; font-size: 0.875rem; margin-top: 0.5rem;">Join Getsetai Innovations today</p>
+        </div>
+
+        <form id="signup-form">
+            <div id="error-message" style="display: none; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: #f87171; padding: 0.75rem; border-radius: 0.5rem; margin-bottom: 1.5rem; font-size: 0.875rem;">
+            </div>
+            
+            <div id="success-message" style="display: none; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); color: #34d399; padding: 0.75rem; border-radius: 0.5rem; margin-bottom: 1.5rem; font-size: 0.875rem;">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="email">Email</label>
+                <input type="email" id="email" class="form-input" placeholder="you@example.com" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="password">Password</label>
+                <input type="password" id="password" class="form-input" placeholder="••••••••" required>
+            </div>
+
+            <button type="submit" id="submit-btn" class="btn-submit">Sign Up</button>
+        </form>
+
+        <p style="text-align: center; color: #9ca3af; font-size: 0.875rem; margin-top: 1.5rem;">
+            Already have an account? <a href="/login" style="color: var(--color-neon-cyan); text-decoration: none;">Sign in</a>
+        </p>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.getElementById('signup-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const btn = document.getElementById('submit-btn');
+        const errorDiv = document.getElementById('error-message');
+        const successDiv = document.getElementById('success-message');
+        
+        btn.disabled = true;
+        btn.textContent = 'Creating account...';
+        errorDiv.style.display = 'none';
+        successDiv.style.display = 'none';
+
+        try {
+            const { data, error } = await window.supabaseClient.auth.signUp({
+                email,
+                password
+            });
+
+            if (error) throw error;
+            
+            // Success
+            successDiv.textContent = 'Account created successfully! You can now sign in.';
+            successDiv.style.display = 'block';
+            btn.textContent = 'Sign Up Complete';
+            
+            setTimeout(() => {
+                window.location.href = '/login';
+            }, 2000);
+            
+        } catch (error) {
+            errorDiv.textContent = error.message;
+            errorDiv.style.display = 'block';
+            btn.disabled = false;
+            btn.textContent = 'Sign Up';
+        }
+    });
+</script>
+{% endblock %}
